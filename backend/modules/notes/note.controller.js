@@ -75,10 +75,17 @@ export const addTodo = async (req, res) => {
   try {
     const note = await Note.findById(req.params.id);
 
-    note.todos.push({ text: req.body.text });
+    if (!note) {
+      return res.status(404).json({ message: "Note not found" });
+    }
+
+    note.todos.push({
+      text: req.body.text,
+    });
+
     await note.save();
 
-    res.json(note);
+    res.json(note.todos);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -87,17 +94,23 @@ export const addTodo = async (req, res) => {
 // Toggle Todo
 export const toggleTodo = async (req, res) => {
   try {
-    const note = await Note.findOne({
-      _id: req.params.noteId,
-      "todos._id": req.params.todoId,
-    });
+    const note = await Note.findById(req.params.noteId);
+
+    if (!note) {
+      return res.status(404).json({ message: "Note not found" });
+    }
 
     const todo = note.todos.id(req.params.todoId);
+
+    if (!todo) {
+      return res.status(404).json({ message: "Todo not found" });
+    }
+
     todo.completed = !todo.completed;
 
     await note.save();
 
-    res.json(note);
+    res.json(todo);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -124,10 +137,45 @@ export const deleteTodo = async (req, res) => {
   try {
     const note = await Note.findById(req.params.noteId);
 
+    if (!note) {
+      return res.status(404).json({ message: "Note not found" });
+    }
+
     note.todos.pull(req.params.todoId);
+
     await note.save();
 
-    res.json(note);
+    res.json({ message: "Todo deleted" });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+
+export const getAllTodos = async (req, res) => {
+  try {
+    const notes = await Note.find({
+      user: req.user.id,
+    });
+
+    let todos = [];
+
+    notes.forEach(note => {
+      note.todos.forEach(todo => {
+        todos.push({
+          _id: todo._id,
+          text: todo.text,
+          completed: todo.completed,
+          noteId: note._id,
+          noteTitle: note.title,
+        });
+      });
+    });
+
+    // Optional: show incomplete todos first
+    todos.sort((a, b) => a.completed - b.completed);
+
+    res.json(todos);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

@@ -1,0 +1,260 @@
+.note-page {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+  height: 100%;
+  padding: 20px;
+  position: relative;
+
+  .navbar {
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    position: sticky;
+    top: 0px;
+    background: rgb(237, 237, 237);
+    padding-block: 20px;
+
+    .nav {
+      display: flex;
+      width: 100%;
+      justify-content: space-between;
+    }
+
+    .name {
+      font-family: "Patrick Hand SC", cursive;
+      font-size: 25px;
+      font-weight: bold;
+    }
+
+    .image {
+      width: 55px;
+      height: 45px;
+      background: rgb(247, 245, 245);
+      padding: 10px;
+      border-radius: 70px;
+      border: none;
+      margin-top: -2px;
+      cursor: pointer;
+
+      img {
+        height: 30px;
+        width: 40px;
+      }
+    }
+    .image:hover {
+      transform: scale(1.1);
+    }
+    .search-container {
+      display: flex;
+      align-items: center;
+      background: #f5f5f5;
+      border-radius: 15px;
+      padding: 10px 15px;
+
+      width: 100%;
+    }
+
+    .search-icon {
+      width: 20px;
+      height: 20px;
+      margin-right: 10px;
+    }
+
+    .search-bar {
+      border: none;
+      outline: none;
+      background: transparent;
+      width: 100%;
+      font-size: 16px;
+    }
+  }
+
+  .todos {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 15px;
+    padding-bottom: 20px;
+    flex: 1;
+  }
+
+  .todo {
+    background: #c7f25c;
+    border-radius: 28px;
+    padding: 22px 18px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  /* HEADER */
+  .headings {
+    position: relative;
+    margin-bottom: 20px;
+  }
+
+  .title {
+    font-size: 30px;
+    font-weight: bold;
+    color: black;
+  }
+
+  .content {
+    font-size: 16px;
+    color: #2f2f2f;
+    margin-top: 5px;
+  }
+
+  /* DELETE BUTTON */
+  .delete {
+    position: absolute;
+    top: 0;
+    right: 0;
+
+    width: 52px;
+    height: 52px;
+    background: white;
+    border-radius: 50%;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+  }
+
+  .delete img {
+    width: 20px;
+    height: 20px;
+  }
+
+  /* LIST */
+  .list {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  /* TODO ITEM */
+  .todo-item {
+    background: white;
+    border-radius: 35px;
+    padding: 14px 18px;
+    height: 45px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+  }
+
+  /* CIRCLE */
+  .circle {
+    width: 32px;
+    height: 32px;
+    border: 2px solid #aaa;
+    border-radius: 50%;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    cursor: pointer;
+  }
+
+  /* COMPLETED */
+  .done {
+    background: black;
+    border: none;
+  }
+
+  /* ICON */
+  .tick-icon {
+    color: #c7f25c;
+    font-size: 16px;
+    height: 15px;
+    width: 15px;
+  }
+
+  /* TEXT */
+  .remainder {
+    font-size: 15px;
+    font-weight: 500;
+    color: #222;
+  }
+
+  /* STRIKE */
+  .completed {
+    text-decoration: line-through;
+    color: #9a9a9a;
+  }
+
+  .notes-list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    width: 100%;
+    flex: 1;
+
+    .note-card {
+      background: white;
+      border-radius: 20px;
+      padding: 18px;
+
+      border: 3px solid yellowgreen;
+      box-sizing: border-box;
+      position: relative;
+      aspect-ratio: 1 / 1;
+      max-height: 300px;
+
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .card {
+      display: flex;
+      padding-top: 25px;
+
+      flex-direction: column;
+      gap: 15px;
+      height: 100%;
+    }
+
+    .Title {
+      font-size: 18px;
+      font-weight: bold;
+      color: black;
+    }
+
+    .Content {
+      font-size: 14px;
+      color: gray;
+      line-height: 1.4;
+      //flex: 1;
+      -webkit-line-clamp: 4;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      text-overflow: ellipsis;
+
+      delete {
+        top: 0;
+        right: 0;
+
+        width: 52px;
+        height: 52px;
+        background: white;
+        border-radius: 50%;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+      }
+
+      .delete img {
+        width: 20px;
+        height: 20px;
+      }
+    }
+  }
+}

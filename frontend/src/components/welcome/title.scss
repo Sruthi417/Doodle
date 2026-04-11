@@ -1,0 +1,137 @@
+.main {
+  position: relative;
+}
+.container1 {
+  // position: relative;
+  background: white;
+  height: 75px;
+  width: 95%;
+  border-radius: 15px;
+  padding: 20px;
+  margin: 12px;
+  //    z-index: 3;
+  margin-top: -390px;
+}
+
+.name {
+  font-family: "Patrick Hand SC", cursive;
+  font-size: 25px;
+  font-weight: bold;
+}
+
+.color {
+  color: black;
+}
+
+.line {
+  position: absolute;
+
+  padding: 0px;
+  padding-left: 2px;
+  margin: 12px;
+  width: 94.5%;
+  height: 300px;
+  z-index: 1;
+
+  border-radius: 15px;
+  margin-top: -2px;
+}
+
+.pencil {
+  position: absolute;
+  transform: rotate(-5deg);
+
+  width: 770px;
+  height: 700px;
+  margin-left: -125px;
+  margin-top: -230px;
+  z-index: 2;
+}
+
+.container2 {
+  position: absolute;
+  top: 50px;
+  background: white;
+  height: 300px;
+  width: 95%;
+  border-radius: 15px;
+  padding: 20px;
+  margin: 12px;
+  margin-top: -45px;
+}
+
+.sen {
+  font-size: 40px;
+  line-height: 45px;
+  margin-top: 10px;
+}
+.green {
+  background: greenyellow;
+  height: 50px;
+  border-radius: 10px;
+}
+
+.seperator {
+  width: 475px;
+  border-top: 1px solid #ddd;
+  margin-top: 29px;
+  margin-left: -20px;
+}
+
+.image {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  margin-top: 20px;
+  margin-left: 11px;
+}
+
+.box1 {
+}
+
+.box1 img {
+  height: 53px;
+  width: 53px;
+  background: rgb(91, 7, 7);
+  padding: 10px;
+  border-radius: 40px;
+}
+
+.box2 {
+  display: flex;
+  gap: 30px;
+  align-items: center;
+}
+
+.box2 img {
+  width: 60px;
+  height: 60px;
+  background: rgb(247, 245, 245);
+  padding: 10px;
+  border-radius: 40px;
+}
+
+
+
+.container3 {
+  position: relative;
+  z-index: 10;
+
+  height: 75px;
+  width: 465px;
+  background: rgb(23, 23, 23);
+  margin-top: 35px;
+  margin-left: -15px;
+  border-radius: 15px;
+
+  border: none;
+  color: white;
+  font-size: 40px;
+  cursor: pointer;
+}
+
+.container3:hover{
+    
+ color: greenyellow;
+
+  }

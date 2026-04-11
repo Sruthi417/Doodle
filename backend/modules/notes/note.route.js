@@ -9,23 +9,24 @@ import {
   toggleTodo,
   editTodo,
   deleteTodo,
+  getAllTodos,
 } from "./note.controller.js";
+import { verifyToken } from "../../middleware/auth.middleware.js";
 
 const noterouter = express.Router();
 
-
 // Notes
-noterouter.post("/", createNote);
-noterouter.get("/", getNotes);
-noterouter.put("/:id", updateNote);
-noterouter.delete("/:id", deleteNote);
-noterouter.patch("/:id/favourite", toggleFavourite);
-
+noterouter.post("/", verifyToken, createNote);
+noterouter.get("/", verifyToken, getNotes);
+noterouter.put("/:id", verifyToken, updateNote);
+noterouter.delete("/:id", verifyToken, deleteNote);
+noterouter.patch("/:id/favourite", verifyToken, toggleFavourite);
 
 // Todos
-noterouter.post("/:id/todo", addTodo);
-noterouter.patch("/:noteId/todo/:todoId", toggleTodo);
-noterouter.put("/:noteId/todo/:todoId", editTodo);
-noterouter.delete("/:noteId/todo/:todoId", deleteTodo);
+noterouter.post("/:id/todo", verifyToken, addTodo);
+noterouter.patch("/:noteId/todo/:todoId", verifyToken, toggleTodo);
+noterouter.put("/:noteId/todo/:todoId", verifyToken, editTodo);
+noterouter.delete("/:noteId/todo/:todoId", verifyToken, deleteTodo);
+noterouter.get("/todos", verifyToken, getAllTodos);
 
 export default noterouter;
