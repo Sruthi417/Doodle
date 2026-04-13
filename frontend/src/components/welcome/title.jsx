@@ -36,7 +36,10 @@ function Title() {
             <img src={hamburger} />
           </div>
         </div>
-        <button className="container3" >
+        <button
+          className="container3"
+          onClick={()=>(window.location.href=`${import.meta.env.VITE_API_URL}/api/auth/google`)}
+        >
           Get started
         </button>
       </div>

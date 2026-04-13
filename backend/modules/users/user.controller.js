@@ -1,17 +1,19 @@
 import User from "./user.model.js";
 import cloudinary from "cloudinary";
 
-
 // 👤 Get Profile
 export const getProfile = async (req, res) => {
+  
   try {
+    console.log(req.user);
     const user = await User.findById(req.user.id).select("-__v");
+
     res.json(user);
   } catch (error) {
+    console.log("ERROR:", error);
     res.status(500).json({ message: error.message });
   }
 };
-
 
 // ✏️ Update Profile (name + image)
 export const updateProfile = async (req, res) => {

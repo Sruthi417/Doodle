@@ -25,12 +25,16 @@ authrouter.get(
 
     res.cookie("token", token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "None",
+      secure: false, // ✅ for localhost
+      sameSite: "Lax", // ✅ for localhost
       maxAge: 7 * 24 * 60 * 60 * 1000,
+    /*res.cookie("token", token, {
+      httpOnly: true,
+      secure: true,        // ✅ HTTPS
+      sameSite: "None",    // ✅ cross-site
+     }); */
     });
-
-    res.redirect(process.env.CLIENT_URL);
+    res.redirect(`${process.env.CLIENT_URL}/home`);
   },
 );
 

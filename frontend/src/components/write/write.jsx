@@ -6,3 +6,5 @@ const Write=()=>{
         </div>
     )
 }
+
+export default Write

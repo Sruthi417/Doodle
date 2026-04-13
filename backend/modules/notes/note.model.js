@@ -1,6 +1,19 @@
 import mongoose from "mongoose";
 
 const todoSchema = new mongoose.Schema({
+  
+    todo_title: {
+    type: String,
+    required: true,
+    trim: true,
+  },
+
+    todo_content: {
+    type: String,
+    default: "",
+    trim: true,
+  },
+  
   text: {
     type: String,
     required: true,

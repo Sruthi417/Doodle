@@ -33,6 +33,18 @@ export const getNotes = async (req, res) => {
   }
 };
 
+
+export const getNoteById = async (req, res) => {
+  try {
+    const note = await Note.findById(req.params.id);
+    res.json(note);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+
+
 // Update Note
 export const updateNote = async (req, res) => {
   try {
@@ -151,7 +163,6 @@ export const deleteTodo = async (req, res) => {
   }
 };
 
-
 export const getAllTodos = async (req, res) => {
   try {
     const notes = await Note.find({
@@ -160,14 +171,16 @@ export const getAllTodos = async (req, res) => {
 
     let todos = [];
 
-    notes.forEach(note => {
-      note.todos.forEach(todo => {
+    notes.forEach((note) => {
+      note.todos.forEach((todo) => {
         todos.push({
           _id: todo._id,
           text: todo.text,
           completed: todo.completed,
           noteId: note._id,
           noteTitle: note.title,
+          todo_title: todo.todo_title,
+          todo_content: todo.todo_content,
         });
       });
     });
