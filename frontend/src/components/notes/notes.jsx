@@ -6,7 +6,7 @@ import useNoteStore from "../../store/useNoteStore";
 import { useNavigate } from "react-router-dom";
 
 const Notelist = () => {
-  const { notes, loading, fetchNotes, deleteNote } = useNoteStore();
+  const { notes, loading, fetchNotes, deleteNote, searchQuery, isSearching } = useNoteStore();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -14,6 +14,17 @@ const Notelist = () => {
   }, []);
 
   if (loading) return <p>Loading...</p>;
+
+  // Show "No items matched" when actively searching and no results
+  if (searchQuery.trim() && !isSearching && notes.length === 0) {
+    return (
+      <div className="notes-list">
+        <p style={{ gridColumn: "1 / -1", textAlign: "center", color: "#999", fontSize: "16px", marginTop: "40px" }}>
+          No items matched
+        </p>
+      </div>
+    );
+  }
 
   return (
     <div className="notes-list">

@@ -193,3 +193,28 @@ export const getAllTodos = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
+
+// Search Notes
+export const searchNotes = async (req, res) => {
+  try {
+    const query = req.query.q;
+
+    if (!query) {
+      return res.json([]); // return empty if no query
+    }
+
+    const notes = await Note.find({
+      user: req.user.id,
+      $or: [
+        { title: { $regex: query, $options: "i" } },
+        { content: { $regex: query, $options: "i" } },
+      ],
+    }).sort({ createdAt: -1 });
+
+    res.json(notes);
+  } catch (error) {
+    console.log("SEARCH ERROR:", error);
+    res.status(500).json({ message: error.message });
+  }
+};

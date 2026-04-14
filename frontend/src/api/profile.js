@@ -10,6 +10,6 @@ export const updateProfile = (formData) =>
     headers: { "Content-Type": "multipart/form-data" },
   });
 
-export const logout = () => {
-  API.get("/auth/logout");
+export const logout = async() => {
+  return await API.get("/auth/logout");
 };

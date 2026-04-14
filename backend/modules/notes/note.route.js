@@ -11,6 +11,7 @@ import {
   deleteTodo,
   getAllTodos,
   getNoteById,
+  searchNotes,
 } from "./note.controller.js";
 import { verifyToken } from "../../middleware/auth.middleware.js";
 
@@ -19,9 +20,8 @@ const noterouter = express.Router();
 // Notes
 noterouter.post("/", verifyToken, createNote);
 noterouter.get("/", verifyToken, getNotes);
-
-// Todos — must be above /:id so Express doesn't treat "todos" as an id
 noterouter.get("/todos", verifyToken, getAllTodos);
+noterouter.get("/search", verifyToken, searchNotes);
 
 noterouter.get("/:id", verifyToken, getNoteById);
 noterouter.put("/:id", verifyToken, updateNote);
