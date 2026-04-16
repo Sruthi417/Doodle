@@ -5,7 +5,7 @@ export const getAllNotesAPI = () => {
 };
 
 export const deleteNoteAPI = (id) => {
-  return API.get(`/notes/$(id)`);
+  return API.delete(`/notes/${id}`);
 };
 
 export const searchNotesAPI = (query) => {

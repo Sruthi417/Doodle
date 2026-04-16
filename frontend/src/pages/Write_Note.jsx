@@ -1,10 +1,8 @@
-import Write from "../components/welcome/title.jsx"
+import Write from "../components/write/write.jsx"
 
 const Write_Note=()=>{
     return(
-        <div>
-
-        </div>
+       <Write/>
     )
 }
 
