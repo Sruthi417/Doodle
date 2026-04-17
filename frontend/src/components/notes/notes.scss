@@ -221,7 +221,7 @@
     margin-top: 5px;
   }
 
-  /* DELETE BUTTON */
+  /* DELETE BUTTON (note cards) */
   .delete {
     position: absolute;
     top: 0;
@@ -255,7 +255,7 @@
     background: white;
     border-radius: 35px;
     padding: 14px 18px;
-    height: 45px;
+    min-height: 45px;
     display: flex;
     align-items: center;
     gap: 15px;
@@ -265,6 +265,7 @@
   .circle {
     width: 32px;
     height: 32px;
+    min-width: 32px;
     border: 2px solid #aaa;
     border-radius: 50%;
 
@@ -294,12 +295,37 @@
     font-size: 15px;
     font-weight: 500;
     color: #222;
+    flex: 1;
   }
 
   /* STRIKE */
   .completed {
     text-decoration: line-through;
     color: #9a9a9a;
+  }
+
+  /* PER-ITEM DELETE */
+  .item-delete {
+    width: 32px;
+    height: 32px;
+    min-width: 32px;
+    background: rgba(0, 0, 0, 0.06);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: background 0.2s ease;
+    flex-shrink: 0;
+
+    &:hover {
+      background: rgba(0, 0, 0, 0.12);
+    }
+
+    img {
+      width: 14px;
+      height: 14px;
+    }
   }
 
   .empty-notes {

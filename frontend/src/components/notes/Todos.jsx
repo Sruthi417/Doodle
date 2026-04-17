@@ -1,51 +1,80 @@
 import "./notes.scss";
 import tick from "../../assets/tick.png";
 import cross from "../../assets/cross.png";
-//import { dummyNotes } from "../../data/dummytodo";
 import { useEffect } from "react";
 import useTodoStore from "../../store/useTodoStore";
 
-const Todo = () => {
+// Group flat todos by noteId + todo_title + todo_content
+const groupTodos = (todos) => {
+  const groups = [];
+  const map = new Map();
 
-  const {todos,fetchTodo,deleteTodo,loading,toggleTodo}=useTodoStore();
+  todos.forEach((todo) => {
+    const key = `${todo.noteId}|||${todo.todo_title}|||${todo.todo_content || ""}`;
+    if (!map.has(key)) {
+      const group = {
+        key,
+        noteId: todo.noteId,
+        todo_title: todo.todo_title,
+        todo_content: todo.todo_content,
+        items: [],
+      };
+      map.set(key, group);
+      groups.push(group);
+    }
+    map.get(key).items.push(todo);
+  });
+
+  return groups;
+};
+
+const Todo = () => {
+  const { todos, fetchTodo, deleteTodo, loading, toggleTodo } = useTodoStore();
+
   useEffect(() => {
     fetchTodo();
   }, [fetchTodo]);
 
   if (loading) return <p>Loading...</p>;
 
+  const grouped = groupTodos(todos);
+
   return (
     <div className="todos">
-      {todos.map((todo) => (
-        <div className="todo" key={todo._id}>
+      {grouped.map((group) => (
+        <div className="todo" key={group.key}>
           <div className="headings">
-            <div className="title">{todo.todo_title}</div>
-            <div className="content">{todo.todo_content}</div>
-            <div className="delete" onClick={()=>deleteTodo(todo.noteId, todo._id)}>
-              <img src={cross} alt="delete" />
-            </div>
+            <div className="title">{group.todo_title}</div>
+            <div className="content">{group.todo_content}</div>
           </div>
 
-          {/* List */}
-           <div className="list">
-            <div className="todo-item">
-              <div
-                className={`circle ${todo.completed ? "done" : ""}`}
-                onClick={() => toggleTodo(todo.noteId, todo._id)}
-              >
-                {todo.completed && (
-                  <img src={tick} className="tick-icon" alt="tick" />
-                )}
-              </div>
+          {/* List of items under this group */}
+          <div className="list">
+            {group.items.map((todo) => (
+              <div className="todo-item" key={todo._id}>
+                <div
+                  className={`circle ${todo.completed ? "done" : ""}`}
+                  onClick={() => toggleTodo(todo.noteId, todo._id)}
+                >
+                  {todo.completed && (
+                    <img src={tick} className="tick-icon" alt="tick" />
+                  )}
+                </div>
 
-              <span
-                className={`remainder ${
-                  todo.completed ? "completed" : ""
-                }`}
-              >
-                {todo.text}
-              </span>
-            </div>
+                <span
+                  className={`remainder ${todo.completed ? "completed" : ""}`}
+                >
+                  {todo.text}
+                </span>
+
+                <div
+                  className="item-delete"
+                  onClick={() => deleteTodo(todo.noteId, todo._id)}
+                >
+                  <img src={cross} alt="delete" />
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       ))}

@@ -111,45 +111,101 @@
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
   }
 
-  // --- Todo Section ---
+  // --- Todo Section (grouped) ---
   .todo-section {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 12px;
     padding: 0 20px 15px;
     flex-shrink: 0;
-    max-height: 250px;
+    max-height: 280px;
     overflow-y: auto;
   }
 
-  .todo-card {
+  .todo-group {
+    background: #f7f7f7;
+    border-radius: 16px;
+    padding: 14px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .todo-group-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background: #f7f7f7;
-    border-radius: 16px;
-    padding: 12px 16px;
-    gap: 12px;
-    transition: background 0.2s ease;
+  }
+
+  .todo-group-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .todo-group-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: #222;
+  }
+
+  .todo-group-content {
+    font-size: 13px;
+    color: #888;
+  }
+
+  .todo-group-items {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .todo-item-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: white;
+    border-radius: 12px;
+    padding: 8px 12px;
+    gap: 10px;
+    transition: background 0.15s ease;
 
     &:hover {
-      background: #f0f0f0;
+      background: #fafafa;
     }
   }
 
-  .todo-left {
+  .todo-item-left {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 10px;
     flex: 1;
     min-width: 0;
   }
 
+  .todo-item-text {
+    font-size: 14px;
+    font-weight: 500;
+    color: #333;
+
+    &.completed {
+      text-decoration: line-through;
+      color: #aaa;
+    }
+  }
+
+  .todo-item-actions {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-shrink: 0;
+  }
+
   .todo-circle {
-    width: 28px;
-    height: 28px;
-    min-width: 28px;
-    border: 2px solid #aaa;
+    width: 24px;
+    height: 24px;
+    min-width: 24px;
+    border: 2px solid #ccc;
     border-radius: 50%;
     display: flex;
     justify-content: center;
@@ -163,47 +219,9 @@
     }
 
     .tick-icon {
-      width: 14px;
-      height: 14px;
+      width: 12px;
+      height: 12px;
     }
-  }
-
-  .todo-info {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-    min-width: 0;
-  }
-
-  .todo-title {
-    font-size: 15px;
-    font-weight: 600;
-    color: #222;
-
-    &.completed {
-      text-decoration: line-through;
-      color: #999;
-    }
-  }
-
-  .todo-content {
-    font-size: 13px;
-    color: #666;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-
-    &.completed {
-      text-decoration: line-through;
-      color: #bbb;
-    }
-  }
-
-  .todo-actions {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    flex-shrink: 0;
   }
 
   .todo-edit-btn {
@@ -211,10 +229,10 @@
     outline: none;
     background: #e8e8e8;
     color: #333;
-    font-size: 13px;
+    font-size: 12px;
     font-weight: 600;
-    padding: 6px 14px;
-    border-radius: 12px;
+    padding: 4px 10px;
+    border-radius: 10px;
     cursor: pointer;
     transition: all 0.2s ease;
 
@@ -224,8 +242,8 @@
   }
 
   .todo-delete {
-    width: 30px;
-    height: 30px;
+    width: 26px;
+    height: 26px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -238,8 +256,8 @@
     }
 
     img {
-      width: 14px;
-      height: 14px;
+      width: 12px;
+      height: 12px;
     }
   }
 
@@ -264,6 +282,8 @@
     padding: 30px;
     width: 90%;
     max-width: 440px;
+    max-height: 85vh;
+    overflow-y: auto;
     display: flex;
     flex-direction: column;
     gap: 16px;
@@ -277,8 +297,8 @@
       color: #111;
     }
 
-    input,
-    textarea {
+    > input,
+    > textarea {
       width: 100%;
       padding: 12px 14px;
       border: 2px solid #e8e8e8;
@@ -296,6 +316,101 @@
 
       &::placeholder {
         color: #aaa;
+      }
+    }
+
+    .modal-texts-section {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .modal-texts-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      span {
+        font-size: 14px;
+        font-weight: 600;
+        color: #555;
+      }
+    }
+
+    .modal-add-text {
+      width: 28px;
+      height: 28px;
+      border: none;
+      outline: none;
+      background: yellowgreen;
+      color: #111;
+      font-size: 18px;
+      font-weight: 700;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s ease;
+      line-height: 1;
+
+      &:hover {
+        background: #9acd32;
+        transform: scale(1.1);
+      }
+
+      &:active {
+        transform: scale(0.95);
+      }
+    }
+
+    .modal-text-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+
+      input {
+        flex: 1;
+        padding: 10px 12px;
+        border: 2px solid #e8e8e8;
+        border-radius: 10px;
+        font-size: 14px;
+        outline: none;
+        font-family: inherit;
+        transition: border-color 0.2s ease;
+        box-sizing: border-box;
+
+        &:focus {
+          border-color: yellowgreen;
+        }
+
+        &::placeholder {
+          color: #aaa;
+        }
+      }
+    }
+
+    .modal-remove-text {
+      width: 28px;
+      height: 28px;
+      min-width: 28px;
+      border: none;
+      outline: none;
+      background: #fee;
+      color: #e44;
+      font-size: 18px;
+      font-weight: 600;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s ease;
+      line-height: 1;
+
+      &:hover {
+        background: #fdd;
+        transform: scale(1.1);
       }
     }
 
@@ -352,12 +467,14 @@
       opacity: 0;
       transform: scale(0.95) translateY(10px);
     }
+
     to {
       opacity: 1;
       transform: scale(1) translateY(0);
     }
   }
 }
+
 .ql-editor .ql-font-arial {
   font-family: Arial, sans-serif;
 }
@@ -414,14 +531,13 @@
 
 .ql-toolbar {
   display: flex;
-  flex-wrap: wrap;   
+  flex-wrap: wrap;
   gap: 8px;
   padding: 10px;
 }
 
 
 .ql-toolbar .ql-formats {
-margin-right: 20px;
+  margin-right: 20px;
 
 }
-

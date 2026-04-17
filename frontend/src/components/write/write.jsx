@@ -111,6 +111,29 @@ const cleanContent = (html) => {
   });
 };
 
+// Group flat todos by todo_title + todo_content
+const groupTodos = (todos) => {
+  const groups = [];
+  const map = new Map();
+
+  todos.forEach((todo) => {
+    const key = `${todo.todo_title}|||${todo.todo_content || ""}`;
+    if (!map.has(key)) {
+      const group = {
+        key,
+        todo_title: todo.todo_title,
+        todo_content: todo.todo_content,
+        items: [],
+      };
+      map.set(key, group);
+      groups.push(group);
+    }
+    map.get(key).items.push(todo);
+  });
+
+  return groups;
+};
+
 const Write = () => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
@@ -124,7 +147,7 @@ const Write = () => {
   const [todoForm, setTodoForm] = useState({
     todo_title: "",
     todo_content: "",
-    text: "",
+    texts: [""],
   });
 
   // Fetch note on mount
@@ -177,11 +200,11 @@ const Write = () => {
     return () => clearTimeout(delay);
   }, [title, content]);
 
-  // --- Todo handlers ---
+  // Todo handlers
 
   const openAddModal = () => {
     setEditingTodo(null);
-    setTodoForm({ todo_title: "", todo_content: "", text: "" });
+    setTodoForm({ todo_title: "", todo_content: "", texts: [""] });
     setShowModal(true);
   };
 
@@ -190,7 +213,7 @@ const Write = () => {
     setTodoForm({
       todo_title: todo.todo_title || "",
       todo_content: todo.todo_content || "",
-      text: todo.text || "",
+      texts: [todo.text || ""],
     });
     setShowModal(true);
   };
@@ -198,11 +221,32 @@ const Write = () => {
   const closeModal = () => {
     setShowModal(false);
     setEditingTodo(null);
-    setTodoForm({ todo_title: "", todo_content: "", text: "" });
+    setTodoForm({ todo_title: "", todo_content: "", texts: [""] });
+  };
+
+  // Text items helpers
+  const addTextRow = () => {
+    setTodoForm({ ...todoForm, texts: [...todoForm.texts, ""] });
+  };
+
+  const updateTextRow = (index, value) => {
+    const updated = [...todoForm.texts];
+    updated[index] = value;
+    setTodoForm({ ...todoForm, texts: updated });
+  };
+
+  const removeTextRow = (index) => {
+    if (todoForm.texts.length <= 1) return;
+    const updated = todoForm.texts.filter((_, i) => i !== index);
+    setTodoForm({ ...todoForm, texts: updated });
   };
 
   const handleSaveTodo = async () => {
     if (!todoForm.todo_title.trim()) return;
+
+    // Filter out empty texts, auto-fill from title if all empty
+    let validTexts = todoForm.texts.filter((t) => t.trim());
+    if (validTexts.length === 0) validTexts = [todoForm.todo_title.trim()];
 
     try {
       let currentNoteId = noteId;
@@ -216,21 +260,25 @@ const Write = () => {
       }
 
       if (editingTodo) {
-        // Edit existing todo
+        // Edit existing todo (single item)
         const res = await editTodoAPI(currentNoteId, editingTodo._id, {
           todo_title: todoForm.todo_title,
           todo_content: todoForm.todo_content,
-          text: todoForm.text,
+          text: validTexts[0],
         });
         setTodos(res.data);
       } else {
-        // Add new todo
-        const res = await addTodoAPI(currentNoteId, {
-          todo_title: todoForm.todo_title,
-          todo_content: todoForm.todo_content,
-          text: todoForm.text,
-        });
-        setTodos(res.data);
+        // Add multiple todos — each text becomes a separate backend todo
+        let lastRes;
+        for (const text of validTexts) {
+          lastRes = await addTodoAPI(currentNoteId, {
+            todo_title: todoForm.todo_title,
+            todo_content: todoForm.todo_content,
+            text,
+          });
+        }
+        // Use the final response (contains all todos)
+        setTodos(lastRes.data);
       }
 
       closeModal();
@@ -257,6 +305,8 @@ const Write = () => {
     }
   };
 
+  const grouped = groupTodos(todos);
+
   return (
     <div className="writing">
       <div className="noting">
@@ -277,52 +327,65 @@ const Write = () => {
           </button>
         </div>
 
-        {/* Todo List */}
-        {todos.length > 0 && (
+        {/* Todo List — grouped */}
+        {grouped.length > 0 && (
           <div className="todo-section">
-            {todos.map((todo) => (
-              <div className="todo-card" key={todo._id}>
-                <div className="todo-left">
-                  <div
-                    className={`todo-circle ${todo.completed ? "done" : ""}`}
-                    onClick={() => handleToggleTodo(todo._id)}
-                  >
-                    {todo.completed && (
-                      <img src={tick} className="tick-icon" alt="tick" />
-                    )}
-                  </div>
-                  <div className="todo-info">
-                    <span
-                      className={`todo-title ${
-                        todo.completed ? "completed" : ""
-                      }`}
-                    >
-                      {todo.todo_title}
+            {grouped.map((group) => (
+              <div className="todo-group" key={group.key}>
+                <div className="todo-group-header">
+                  <div className="todo-group-info">
+                    <span className="todo-group-title">
+                      {group.todo_title}
                     </span>
-                    {todo.todo_content && (
-                      <span
-                        className={`todo-content ${
-                          todo.completed ? "completed" : ""
-                        }`}
-                      >
-                        {todo.todo_content}
+                    {group.todo_content && (
+                      <span className="todo-group-content">
+                        {group.todo_content}
                       </span>
                     )}
                   </div>
                 </div>
-                <div className="todo-actions">
-                  <button
-                    className="todo-edit-btn"
-                    onClick={() => openEditModal(todo)}
-                  >
-                    Edit
-                  </button>
-                  <div
-                    className="todo-delete"
-                    onClick={() => handleDeleteTodo(todo._id)}
-                  >
-                    <img src={cross} alt="delete" />
-                  </div>
+                <div className="todo-group-items">
+                  {group.items.map((todo) => (
+                    <div className="todo-item-row" key={todo._id}>
+                      <div className="todo-item-left">
+                        <div
+                          className={`todo-circle ${
+                            todo.completed ? "done" : ""
+                          }`}
+                          onClick={() => handleToggleTodo(todo._id)}
+                        >
+                          {todo.completed && (
+                            <img
+                              src={tick}
+                              className="tick-icon"
+                              alt="tick"
+                            />
+                          )}
+                        </div>
+                        <span
+                          className={`todo-item-text ${
+                            todo.completed ? "completed" : ""
+                          }`}
+                        >
+                          {todo.text}
+                        </span>
+                      </div>
+                      <div className="todo-item-actions">
+                        <button
+                          className="todo-edit-btn"
+                          onClick={() => openEditModal(todo)}
+                        >
+                          Edit
+                        </button>
+                        <div
+                          className="todo-delete"
+                          onClick={() => handleDeleteTodo(todo._id)}
+                        >
+                          <img src={cross} alt="delete" />
+                        </div>
+                      </div>
+                    </div>
+                  ))}
                 </div>
               </div>
             ))}
@@ -347,28 +410,55 @@ const Write = () => {
             <h3>{editingTodo ? "Edit Todo" : "Add Todo"}</h3>
             <input
               type="text"
-              placeholder="Todo title"
+              placeholder="Todo title (e.g. Grocery)"
               value={todoForm.todo_title}
               onChange={(e) =>
                 setTodoForm({ ...todoForm, todo_title: e.target.value })
               }
             />
             <textarea
-              placeholder="Todo content (optional)"
+              placeholder="Description (optional)"
               value={todoForm.todo_content}
               onChange={(e) =>
                 setTodoForm({ ...todoForm, todo_content: e.target.value })
               }
-              rows={3}
+              rows={2}
             />
-            <input
-              type="text"
-              placeholder="Short label (e.g. Buy milk)"
-              value={todoForm.text}
-              onChange={(e) =>
-                setTodoForm({ ...todoForm, text: e.target.value })
-              }
-            />
+
+            <div className="modal-texts-section">
+              <div className="modal-texts-header">
+                <span>Items</span>
+                {!editingTodo && (
+                  <button
+                    className="modal-add-text"
+                    type="button"
+                    onClick={addTextRow}
+                  >
+                    +
+                  </button>
+                )}
+              </div>
+              {todoForm.texts.map((text, i) => (
+                <div className="modal-text-row" key={i}>
+                  <input
+                    type="text"
+                    placeholder={`Item ${i + 1} (e.g. Buy milk)`}
+                    value={text}
+                    onChange={(e) => updateTextRow(i, e.target.value)}
+                  />
+                  {!editingTodo && todoForm.texts.length > 1 && (
+                    <button
+                      className="modal-remove-text"
+                      type="button"
+                      onClick={() => removeTextRow(i)}
+                    >
+                      ×
+                    </button>
+                  )}
+                </div>
+              ))}
+            </div>
+
             <div className="modal-buttons">
               <button className="modal-cancel" onClick={closeModal}>
                 Cancel
