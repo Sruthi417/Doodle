@@ -1,7 +1,11 @@
 import "./write.scss";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import ReactQuill, { Quill } from "react-quill-new";
 import "react-quill-new/dist/quill.snow.css";
+import { useParams } from "react-router-dom";
+import { createNote, updateNote, getNoteById } from "../../api/write";
+import { deleteNoteAPI } from "../../api/note";
+import DOMPurify from "dompurify";
 
 const Font = Quill.import("formats/font");
 
@@ -72,15 +76,83 @@ const formats = [
   "script",
   "header",
   "list",
-  "bullet",
   "align",
   "link",
   "image",
 ];
 
+const cleanContent = (html) => {
+  return DOMPurify.sanitize(html, {
+    ALLOWED_TAGS: [
+      "p",
+      "br",
+      "strong",
+      "em",
+      "u",
+      "ul",
+      "ol",
+      "li",
+      "h1",
+      "h2",
+      "h3",
+      "a",
+    ],
+    ALLOWED_ATTR: ["href"],
+  });
+};
+
 const Write = () => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
+  const { id } = useParams();
+  const [noteId, setNoteId] = useState(id || null);
+
+  useEffect(() => {
+    if (!id) return;
+
+    const fetchNote = async () => {
+      const res = await getNoteById(id);
+
+      setTitle(res.data.title || "");
+      setContent(res.data.content || "");
+      setNoteId(res.data._id);
+    };
+
+    fetchNote();
+  }, [id]);
+
+  useEffect(() => {
+    const delay = setTimeout(async () => {
+      const isEmpty = !title.trim() && (!content || content === "<p><br></p>");
+
+      try {
+        if (isEmpty && noteId) {
+          await deleteNoteAPI(noteId);
+          setNoteId(null);
+
+          window.history.replaceState(null, "", "/write");
+          return;
+        }
+
+        if (isEmpty && !noteId) return;
+
+        if (!noteId) {
+          const res = await createNote({ title, content });
+
+          setNoteId(res.data._id);
+
+          window.history.replaceState(null, "", `/write/${res.data._id}`);
+        } else {
+          const cleaned = cleanContent(content);
+          await updateNote(noteId, { title, content: cleaned });
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    }, 800);
+
+    return () => clearTimeout(delay);
+  }, [title, content]);
 
   return (
     <div className="writing">
@@ -103,7 +175,7 @@ const Write = () => {
           <ReactQuill
             value={content}
             onChange={setContent}
-            modules={modules} 
+            modules={modules}
             formats={formats}
             placeholder="Write your notes here..."
           />

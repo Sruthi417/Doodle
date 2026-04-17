@@ -33,17 +33,21 @@ export const getNotes = async (req, res) => {
   }
 };
 
-
 export const getNoteById = async (req, res) => {
   try {
-    const note = await Note.findById(req.params.id);
+     const note = await Note.findOne({
+      _id: req.params.id,
+      user: req.user.id, 
+    });
+
+    if (!note) {
+      return res.status(404).json({ message: "Note not found" });
+    }
     res.json(note);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };
-
-
 
 // Update Note
 export const updateNote = async (req, res) => {
@@ -92,7 +96,10 @@ export const addTodo = async (req, res) => {
     }
 
     note.todos.push({
-      text: req.body.text,
+      todo_title: req.body.todo_title,
+      todo_content: req.body.todo_content,
+      text: req.body.text || "",   
+      completed: false,
     });
 
     await note.save();
@@ -108,10 +115,6 @@ export const toggleTodo = async (req, res) => {
   try {
     const note = await Note.findById(req.params.noteId);
 
-    if (!note) {
-      return res.status(404).json({ message: "Note not found" });
-    }
-
     const todo = note.todos.id(req.params.todoId);
 
     if (!todo) {
@@ -122,11 +125,12 @@ export const toggleTodo = async (req, res) => {
 
     await note.save();
 
-    res.json(todo);
+    res.json(note.todos);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };
+
 
 // Edit Todo
 export const editTodo = async (req, res) => {
@@ -134,11 +138,18 @@ export const editTodo = async (req, res) => {
     const note = await Note.findById(req.params.noteId);
 
     const todo = note.todos.id(req.params.todoId);
-    todo.text = req.body.text;
+
+    if (!todo) {
+      return res.status(404).json({ message: "Todo not found" });
+    }
+
+    todo.todo_title = req.body.todo_title;
+    todo.todo_content = req.body.todo_content;
+    todo.text = req.body.text || todo.text;
 
     await note.save();
 
-    res.json(note);
+    res.json(note.todos);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -157,7 +168,7 @@ export const deleteTodo = async (req, res) => {
 
     await note.save();
 
-    res.json({ message: "Todo deleted" });
+    res.json(note.todos);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -193,7 +204,6 @@ export const getAllTodos = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
-
 
 // Search Notes
 export const searchNotes = async (req, res) => {

@@ -6,6 +6,15 @@ import useNoteStore from "../../store/useNoteStore";
 import { useNavigate } from "react-router-dom";
 import emptynote from "../../assets/emptynote.png"
 
+
+
+
+
+const getPlainText = (html) => {
+  const doc = new DOMParser().parseFromString(html, "text/html");
+  return doc.body.textContent || "";
+};
+
 const Notelist = () => {
   const { notes, loading, fetchNotes, deleteNote, searchQuery, isSearching } =
     useNoteStore();
@@ -70,7 +79,7 @@ const Notelist = () => {
           </div>
           <div className="card">
             <div className="Title">{note.title}</div>
-            <div className="Content">{note.content}</div>
+            <div className="Content" dangerouslySetInnerHTML={{ __html: note.content }}></div>
           </div>
         </div>
       ))}

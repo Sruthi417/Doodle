@@ -13,6 +13,8 @@ function App() {
         <Routes>
           <Route path="/" element={<Welcome />} />
           <Route path="/home" element={<Note/>}/>
+           <Route path="/write/:id" element={<Write_Note />} />
+
           <Route path="/write" element={<Write_Note/>}/>
           </Routes>
       </div>
