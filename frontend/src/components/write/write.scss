@@ -1,0 +1,161 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins&family=Roboto&family=Inter&family=Lato&family=Montserrat&display=swap");
+
+.writing {
+  background: white;
+  height: 100vh;
+
+  border: 2px solid black;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+
+  .noting {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow: hidden;
+  }
+
+  .head {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+    align-items: flex-start;
+    flex-shrink: 0;
+  }
+
+  .titles {
+    font-size: 32px;
+    font-weight: 700;
+    border: none;
+    outline: none;
+    //width: 100%;
+    resize: none;
+    background: transparent;
+    color: #111;
+    overflow: hidden;
+
+    padding: 15px 0;
+  }
+
+  .titles::placeholder {
+    color: #aaa;
+    font-weight: 600;
+  }
+
+  .titles:focus {
+    outline: none;
+  }
+
+  .contents {
+    flex: 1;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+
+    .quill {
+      display: flex;
+      flex-direction: column-reverse;
+      height: 100%;
+    }
+
+    .ql-toolbar {
+      flex-shrink: 0;
+      position: sticky;
+      bottom: 0;
+      z-index: 5;
+      background: white;
+    }
+
+    .ql-toolbar .ql-picker-options {
+      top: auto !important;
+      bottom: 100% !important;
+      z-index: 10;
+    }
+
+    .ql-container {
+      flex: 1;
+      overflow-y: auto;
+    }
+
+    .ql-editor {
+      min-height: 100%;
+    }
+  }
+
+
+
+  .to-add {
+    border: none;
+    outline: none;
+    padding: 10px;
+    margin-top: 12px;
+    margin-left: -20px;
+    color: rgb(9, 9, 9);
+    background: yellowgreen;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    height: fit-content;
+    font-weight: bold;
+    border-radius: 15px;
+  }
+
+  .to-add:hover {
+    background: #9acd32;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+  }
+
+  .to-add:active {
+    transform: scale(0.95);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  }
+}
+.ql-editor .ql-font-arial {
+  font-family: Arial, sans-serif;
+}
+
+.ql-editor .ql-font-roboto {
+  font-family: "Roboto", sans-serif;
+}
+
+.ql-editor .ql-font-poppins {
+  font-family: "Poppins", sans-serif;
+}
+
+.ql-editor .ql-font-inter {
+  font-family: "Inter", sans-serif;
+}
+
+.ql-editor .ql-font-lato {
+  font-family: "Lato", sans-serif;
+}
+
+.ql-editor .ql-font-montserrat {
+  font-family: "Montserrat", sans-serif;
+}
+
+
+
+.ql-snow .ql-picker.ql-font .ql-picker-label::before {
+  content: "Font" !important;
+}
+
+.ql-snow .ql-picker.ql-font .ql-picker-item::before {
+  content: attr(data-value) !important;
+  text-transform: capitalize;
+}
+
+.ql-toolbar {
+  display: flex;
+  flex-wrap: wrap;   
+  gap: 8px;
+  padding: 10px;
+}
+
+
+.ql-toolbar .ql-formats {
+margin-right: 20px;
+
+}
+
