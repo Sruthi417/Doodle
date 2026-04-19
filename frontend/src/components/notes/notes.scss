@@ -160,9 +160,11 @@
         width: 40px;
       }
     }
+
     .image:hover {
       transform: scale(1.1);
     }
+
     .search-container {
       display: flex;
       align-items: center;
@@ -341,7 +343,7 @@
     text-align: center;
     animation: fadeIn 0.4s ease-in-out;
     margin-top: -170px;
-    
+
 
     .empty-icon {
       width: 60%;
@@ -385,15 +387,17 @@
     }
   }
 
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }}
 
   .notes-list {
     display: grid;

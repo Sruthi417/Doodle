@@ -169,7 +169,13 @@ const Write = () => {
   // Autosave (unchanged logic)
   useEffect(() => {
     const delay = setTimeout(async () => {
-      const isEmpty = !title.trim() && (!content || content === "<p><br></p>");
+      const isEmpty =
+        !title.trim() &&
+        (!content ||
+          content === "<p><br></p>" ||
+          content.trim() === "" ||
+          content === "<p></p>") &&
+        todos.length === 0;
 
       try {
         if (isEmpty && noteId) {
@@ -198,7 +204,7 @@ const Write = () => {
     }, 800);
 
     return () => clearTimeout(delay);
-  }, [title, content]);
+  }, [title, content, todos]);
 
   // Todo handlers
 

@@ -4,7 +4,7 @@
   background: white;
   height: 100vh;
 
-  border: 2px solid black;
+  border: 2px solid #aaa;
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -51,12 +51,14 @@
     flex: 1;
     overflow: hidden;
     display: flex;
+
     flex-direction: column;
 
     .quill {
       display: flex;
       flex-direction: column-reverse;
       height: 100%;
+
     }
 
     .ql-toolbar {
@@ -65,6 +67,8 @@
       bottom: 0;
       z-index: 5;
       background: white;
+      border: none !important;
+
     }
 
     .ql-toolbar .ql-picker-options {
@@ -76,6 +80,7 @@
     .ql-container {
       flex: 1;
       overflow-y: auto;
+      border: none !important;
     }
 
     .ql-editor {
@@ -101,7 +106,7 @@
   }
 
   .to-add:hover {
-    background: #9acd32;
+    background: yellowgreen;
     transform: translateY(-2px);
     box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
   }
@@ -297,8 +302,8 @@
       color: #111;
     }
 
-    > input,
-    > textarea {
+    >input,
+    >textarea {
       width: 100%;
       padding: 12px 14px;
       border: 2px solid #e8e8e8;
