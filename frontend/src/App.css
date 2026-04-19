@@ -16,7 +16,7 @@
 .screen {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: center; /* Preserve mobile centering */
   width: 100%;
   max-width: 500px;
   height: 100vh;
@@ -24,6 +24,23 @@
   background: rgb(237, 237, 237);
   overflow: scroll;
   overflow-x: hidden;
+  margin: 0 auto;
+  transition: max-width 0.3s ease;
+}
+
+/* Tablet Responsiveness */
+@media (min-width: 768px) {
+  .screen {
+    max-width: 90%;
+    justify-content: flex-start; /* Start from top on larger screens */
+  }
+}
+
+/* Desktop Responsiveness */
+@media (min-width: 1024px) {
+  .screen {
+    max-width: 1200px;
+  }
 }
 
 ::-webkit-scrollbar{

@@ -468,4 +468,37 @@
       }
     }
   }
+
+  /* Tablet & Desktop Responsiveness */
+  @media (min-width: 768px) {
+    .todos {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+    }
+
+    .notes-list {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+
+      .note-card {
+        max-height: 250px; /* Slight height adjustment for multi-column */
+      }
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .todos {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .notes-list {
+      grid-template-columns: repeat(4, 1fr);
+      gap: 25px;
+
+      .note-card {
+        max-height: 280px;
+      }
+    }
+  }
 }
