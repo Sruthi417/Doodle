@@ -31,15 +31,28 @@
 /* Tablet Responsiveness */
 @media (min-width: 768px) {
   .screen {
-    max-width: 90%;
+    max-width: 100%;
     justify-content: flex-start; /* Start from top on larger screens */
   }
 }
 
-/* Desktop Responsiveness */
+/* Desktop Responsiveness (Current Tablet/Small Laptop) */
 @media (min-width: 1024px) {
   .screen {
     max-width: 1200px;
+  }
+}
+
+
+
+
+/* Large Display Responsiveness (Full Width for >1024px) */
+@media (min-width: 1025px) {
+  .screen {
+    max-width: 100%;
+    
+    margin: 0;
+    padding-inline: 40px; /* Add some breathing room on sides instead of max-width */
   }
 }
 

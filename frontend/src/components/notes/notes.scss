@@ -501,4 +501,24 @@
       }
     }
   }
+
+  /* Large Display Responsiveness (Full Width for >1024px) */
+  @media (min-width: 1025px) {
+    padding: 30px 40px;
+
+    .todos {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 25px;
+    }
+
+    .notes-list {
+      grid-template-columns: repeat(5, 1fr);
+      gap: 30px;
+
+      .note-card {
+        max-height: 260px;
+      }
+    }
+  }
 }
