@@ -3,8 +3,9 @@
 .writing {
   background: white;
   height: 100vh;
-
-  border: 2px solid #aaa;
+  width: 100%;
+  max-width: 100% !important;
+  margin: 0 !important;
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -13,6 +14,8 @@
     display: flex;
     flex-direction: column;
     height: 100%;
+    width: 100%;
+    max-width: 100%;
     overflow: hidden;
   }
 
@@ -22,6 +25,7 @@
     padding: 20px;
     align-items: flex-start;
     flex-shrink: 0;
+    width: 100%;
   }
 
   .titles {
@@ -29,12 +33,11 @@
     font-weight: 700;
     border: none;
     outline: none;
-    //width: 100%;
+    width: 100%;
     resize: none;
     background: transparent;
     color: #111;
     overflow: hidden;
-
     padding: 15px 0;
   }
 
@@ -51,14 +54,14 @@
     flex: 1;
     overflow: hidden;
     display: flex;
-
     flex-direction: column;
+    width: 100%;
 
     .quill {
       display: flex;
       flex-direction: column-reverse;
       height: 100%;
-
+      width: 100%;
     }
 
     .ql-toolbar {
@@ -68,7 +71,7 @@
       z-index: 5;
       background: white;
       border: none !important;
-
+      width: 100%;
     }
 
     .ql-toolbar .ql-picker-options {
@@ -81,6 +84,7 @@
       flex: 1;
       overflow-y: auto;
       border: none !important;
+      width: 100%;
     }
 
     .ql-editor {
@@ -88,14 +92,12 @@
     }
   }
 
-
-
   .to-add {
     border: none;
     outline: none;
     padding: 10px;
     margin-top: 12px;
-    margin-left: -20px;
+    margin-left: 0; /* Reset negative margin to prevent side issues */
     color: rgb(9, 9, 9);
     background: yellowgreen;
     cursor: pointer;
@@ -125,6 +127,8 @@
     flex-shrink: 0;
     max-height: 280px;
     overflow-y: auto;
+    width: 100%;
+    box-sizing: border-box;
   }
 
   .todo-group {
@@ -134,6 +138,8 @@
     display: flex;
     flex-direction: column;
     gap: 10px;
+    width: 100%;
+    box-sizing: border-box;
   }
 
   .todo-group-header {
@@ -504,8 +510,6 @@
   font-family: "Montserrat", sans-serif;
 }
 
-
-
 .ql-snow .ql-picker.ql-font .ql-picker-label::before {
   content: "Font" !important;
 }
@@ -515,7 +519,6 @@
   text-transform: capitalize;
 }
 
-
 .ql-snow .ql-picker.ql-size .ql-picker-label::before {
   content: "Size" !important;
 }
@@ -523,7 +526,6 @@
 .ql-snow .ql-picker.ql-size .ql-picker-label[data-value]::before {
   content: attr(data-value) !important;
 }
-
 
 .ql-snow .ql-picker.ql-size .ql-picker-item::before {
   content: attr(data-value) !important;
@@ -541,8 +543,6 @@
   padding: 10px;
 }
 
-
 .ql-toolbar .ql-formats {
   margin-right: 20px;
-
 }

@@ -18,42 +18,67 @@
   flex-direction: column;
   justify-content: center; /* Preserve mobile centering */
   width: 100%;
-  max-width: 500px;
+  max-width: 500px; /* Default for mobile < 500px */
   height: 100vh;
-  /* border: 2px solid black; */
   background: rgb(237, 237, 237);
   overflow: scroll;
   overflow-x: hidden;
   margin: 0 auto;
-  transition: max-width 0.3s ease;
+  transition: all 0.3s ease;
+  
+
+}
+
+/* 500px - 768px Range Fix */
+@media (min-width: 500px) and (max-width: 767px) {
+  .layout {
+    justify-content: flex-start;
+  }
+  .screen {
+    max-width: 100%;
+    margin: 0;
+    justify-content: flex-start;
+  }
 }
 
 /* Tablet Responsiveness */
 @media (min-width: 768px) {
+  .layout {
+    justify-content: flex-start;
+  }
   .screen {
     max-width: 100%;
-    justify-content: flex-start; /* Start from top on larger screens */
+    margin: 0;
+    justify-content: flex-start;
   }
 }
 
-/* Desktop Responsiveness (Current Tablet/Small Laptop) */
+/* Desktop Responsiveness */
 @media (min-width: 1024px) {
   .screen {
-    max-width: 1200px;
+    max-width: 100%;
   }
 }
-
-
-
 
 /* Large Display Responsiveness (Full Width for >1024px) */
 @media (min-width: 1025px) {
   .screen {
     max-width: 100%;
-    
     margin: 0;
-    padding-inline: 40px; /* Add some breathing room on sides instead of max-width */
+    padding-inline: 40px;
   }
+}
+
+/* Global full-width override logic for Write page */
+.layout:has(.writing) {
+  justify-content: flex-start !important;
+  
+
+}
+.layout:has(.writing) .screen {
+  max-width: 100% !important;
+  margin: 0 !important;
+  padding: 0px;
 }
 
 ::-webkit-scrollbar{
