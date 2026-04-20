@@ -21,17 +21,21 @@ authrouter.get(
     failureRedirect: "/login",
   }),
   (req, res) => {
+    console.log("User authenticated via Google:", req.user);
     const token = generateToken(req.user);
 
-    const isProd = process.env.NODE_ENV === "production";
+    const isProd = process.env.NODE_ENV?.toLowerCase() === "production";
+    console.log("Setting cookie - isProd:", isProd);
 
     res.cookie("token", token, {
       httpOnly: true,
       secure: isProd,
       sameSite: isProd ? "None" : "Lax",
+      path: "/",
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 
+    console.log("Redirecting to:", `${process.env.CLIENT_URL}/home`);
     res.redirect(`${process.env.CLIENT_URL}/home`);
   }
 );
