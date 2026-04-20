@@ -32,12 +32,13 @@ authrouter.get(
       secure: isProd,
       sameSite: isProd ? "None" : "Lax",
       path: "/",
+      domain: ".onrender.com",
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 
     console.log("Redirecting to:", `${process.env.CLIENT_URL}/home`);
     res.redirect(`${process.env.CLIENT_URL}/home`);
-  }
+  },
 );
 // LOGOUT
 authrouter.get("/logout", (req, res) => {
