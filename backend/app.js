@@ -13,6 +13,7 @@ const allowedOrigins = [
   process.env.CLIENT_URL,
   "http://localhost:3000",
   "http://localhost:5173",
+  "https://doodle-xi-two.vercel.app",
 ].filter(Boolean);
 
 app.use(
