@@ -16,7 +16,7 @@ const allowedOrigins = [
   "https://doodle-xi-two.vercel.app",
 ].filter(Boolean);
 
-app.use(
+/*app.use(
   cors({
     origin: function (origin, callback) {
       // allow requests with no origin (like Postman)
@@ -30,12 +30,24 @@ app.use(
     },
     credentials: true,
   }),
+);*/
+
+
+app.use(
+  cors({
+    origin: [
+      process.env.CLIENT_URL,
+      "http://localhost:5173",
+      "https://doodle-xi-two.vercel.app",
+    ],
+    credentials: true,
+  })
 );
 
 app.use(passport.initialize());
 
 app.use("/api", router);
-
+app.set("trust proxy", 1);
 app.get("/", (req, res) => {
   res.send("Welcome to doodling");
 });
