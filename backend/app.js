@@ -13,34 +13,34 @@ app.use(express.json()); //express.json() lets Express read JSON request bodies.
 app.use(express.urlencoded({ extended: false })); //express.urlencoded() lets Express read data submitted from forms (URL-encoded format).
 app.use(cookieParser()); //cookieParser() lets Express read cookies sent by the browser in the request.
 
+
+
+
 const allowedOrigins = [
   process.env.CLIENT_URL,
-  "http://localhost:3000",
   "http://localhost:5173",
+  "http://localhost:5174",
+  "http://localhost:3000",
   "https://doodle-xi-two.vercel.app",
-].filter(Boolean);
+].filter(Boolean).map(url => url.replace(/\/$/, ""));
 
-/*app.use(
+app.use(
   cors({
     origin: function (origin, callback) {
-      // allow requests with no origin (like Postman)
+      // Allow requests with no origin (like mobile apps or curl)
       if (!origin) return callback(null, true);
-
-      if (allowedOrigins.includes(origin)) {
+      
+      const normalizedOrigin = origin.replace(/\/$/, "");
+      if (allowedOrigins.includes(normalizedOrigin)) {
         callback(null, true);
       } else {
+        console.log("Origin not allowed by CORS:", origin);
         callback(new Error("Not allowed by CORS"));
       }
     },
     credentials: true,
-  }),
-);*/
-
-
-app.use(
-  cors({
-    origin: [process.env.CLIENT_URL, "http://localhost:5173", "http://localhost:5174"].filter(Boolean),
-    credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With", "Accept"],
   })
 );
 

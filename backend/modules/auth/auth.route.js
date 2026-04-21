@@ -24,19 +24,19 @@ authrouter.get(
     console.log("User authenticated via Google:", req.user);
     const token = generateToken(req.user);
 
-    const isProd = process.env.NODE_ENV?.toLowerCase() === "production";
+    // Determine if we are in production based on NODE_ENV or if we are not on localhost (more robust)
+    const isProd = process.env.NODE_ENV === "production" || process.env.SERVER_URL?.includes("render.com");
     console.log("Setting cookie - isProd:", isProd);
 
-    console.log("req.secure:", req.secure);
-    console.log("x-forwarded-proto:", req.headers["x-forwarded-proto"]);
-
-    res.cookie("token", token, {
+    const cookieOptions = {
       httpOnly: true,
-      secure: isProd,
+      secure: isProd, // Must be true for SameSite: 'None'
       sameSite: isProd ? "None" : "Lax",
       path: "/",
       maxAge: 7 * 24 * 60 * 60 * 1000,
-    });
+    };
+
+    res.cookie("token", token, cookieOptions);
 
     // Ensure no trailing slash in CLIENT_URL for redirect
     const clientUrl = process.env.CLIENT_URL?.replace(/\/$/, "");
@@ -46,7 +46,13 @@ authrouter.get(
 );
 // LOGOUT
 authrouter.get("/logout", (req, res) => {
-  res.clearCookie("token");
+  const isProd = process.env.NODE_ENV === "production" || process.env.SERVER_URL?.includes("render.com");
+  res.clearCookie("token", {
+    httpOnly: true,
+    secure: isProd,
+    sameSite: isProd ? "None" : "Lax",
+    path: "/",
+  });
   res.json({ message: "Logged out" });
 });
 
