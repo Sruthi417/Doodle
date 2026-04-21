@@ -24,17 +24,19 @@ authrouter.get(
     console.log("User authenticated via Google:", req.user);
     const token = generateToken(req.user);
 
-    // Determine if we are in production based on NODE_ENV or if we are not on localhost (more robust)
+    // Dynamic cookie policy: Support both production (cross-origin) and localhost
+    const isLocalhost = req.get('host')?.includes('localhost');
     const isProd = process.env.NODE_ENV?.toLowerCase() === "production" || process.env.SERVER_URL?.includes("render.com");
-    console.log("Setting cookie - isProd:", isProd);
 
     const cookieOptions = {
       httpOnly: true,
-      secure: isProd, // Must be true for SameSite: 'None'
-      sameSite: isProd ? "None" : "Lax",
+      secure: !isLocalhost, // Secure must be true for SameSite: 'None'
+      sameSite: isLocalhost ? "Lax" : "None",
       path: "/",
       maxAge: 7 * 24 * 60 * 60 * 1000,
     };
+
+    console.log("Setting cookie - options:", { ...cookieOptions, value: "HIDDEN" });
 
     res.cookie("token", token, cookieOptions);
 
@@ -46,11 +48,11 @@ authrouter.get(
 );
 // LOGOUT
 authrouter.get("/logout", (req, res) => {
-  const isProd = process.env.NODE_ENV === "production" || process.env.SERVER_URL?.includes("render.com");
+  const isLocalhost = req.get('host')?.includes('localhost');
   res.clearCookie("token", {
     httpOnly: true,
-    secure: isProd,
-    sameSite: isProd ? "None" : "Lax",
+    secure: !isLocalhost,
+    sameSite: isLocalhost ? "Lax" : "None",
     path: "/",
   });
   res.json({ message: "Logged out" });
