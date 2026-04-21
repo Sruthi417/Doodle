@@ -27,6 +27,9 @@ authrouter.get(
     const isProd = process.env.NODE_ENV?.toLowerCase() === "production";
     console.log("Setting cookie - isProd:", isProd);
 
+    console.log("req.secure:", req.secure);
+    console.log("x-forwarded-proto:", req.headers["x-forwarded-proto"]);
+
     res.cookie("token", token, {
       httpOnly: true,
       secure: isProd,
