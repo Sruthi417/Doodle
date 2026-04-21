@@ -20,19 +20,21 @@ const useTodoStore=create ((set)=>({
 
     //Toggletodo
     toggleTodo:async(noteId,todoId)=>{
-       try{
-        await toggleTodoAPI(noteId,todoId)
+        // Optimistic update: Update local state immediately
+        const previousTodos = [...useTodoStore.getState().todos];
         set((state)=>({
             todos: state.todos.map((t) =>
-          t._id === todoId
-            ? { ...t, completed: !t.completed }
-            : t
-        ),
-      }));
-    } catch (err) {
-      console.log(err);
-    
-       } 
+                t._id === todoId ? { ...t, completed: !t.completed } : t
+            ),
+        }));
+
+        try {
+            await toggleTodoAPI(noteId,todoId);
+        } catch (err) {
+            console.log(err);
+            // Rollback if API fails
+            set({ todos: previousTodos });
+        } 
     },
  
     deleteTodo:async(noteId,todoId)=>{

@@ -113,7 +113,11 @@ export const addTodo = async (req, res) => {
 // Toggle Todo
 export const toggleTodo = async (req, res) => {
   try {
-    const note = await Note.findById(req.params.noteId);
+    const note = await Note.findOne({ _id: req.params.noteId, user: req.user.id });
+
+    if (!note) {
+      return res.status(404).json({ message: "Note not found" });
+    }
 
     const todo = note.todos.id(req.params.todoId);
 
@@ -122,6 +126,7 @@ export const toggleTodo = async (req, res) => {
     }
 
     todo.completed = !todo.completed;
+    note.markModified("todos");
 
     await note.save();
 

@@ -58,12 +58,14 @@ const Todo = () => {
                   onClick={() => toggleTodo(todo.noteId, todo._id)}
                 >
                   {todo.completed && (
-                    <img src={tick} className="tick-icon" alt="tick" />
+                    <img src={tick} className="tick-icon" alt="tick" style={{ pointerEvents: "none" }} />
                   )}
                 </div>
 
                 <span
                   className={`remainder ${todo.completed ? "completed" : ""}`}
+                  onClick={() => toggleTodo(todo.noteId, todo._id)}
+                  style={{ cursor: "pointer" }}
                 >
                   {todo.text}
                 </span>
