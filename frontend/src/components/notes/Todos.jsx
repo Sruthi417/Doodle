@@ -6,6 +6,7 @@ import useTodoStore from "../../store/useTodoStore";
 
 // Group flat todos by noteId + todo_title + todo_content
 const groupTodos = (todos) => {
+  if (!Array.isArray(todos)) return [];
   const groups = [];
   const map = new Map();
 

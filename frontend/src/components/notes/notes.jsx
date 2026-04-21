@@ -62,7 +62,7 @@ const Notelist = () => {
 
   return (
     <div className="notes-list">
-      {notes.map((note) => (
+      {Array.isArray(notes) && notes.map((note) => (
         <div
           className="note-card"
           key={note._id}

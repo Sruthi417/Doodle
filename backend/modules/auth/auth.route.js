@@ -25,7 +25,7 @@ authrouter.get(
     const token = generateToken(req.user);
 
     // Determine if we are in production based on NODE_ENV or if we are not on localhost (more robust)
-    const isProd = process.env.NODE_ENV === "production" || process.env.SERVER_URL?.includes("render.com");
+    const isProd = process.env.NODE_ENV?.toLowerCase() === "production" || process.env.SERVER_URL?.includes("render.com");
     console.log("Setting cookie - isProd:", isProd);
 
     const cookieOptions = {

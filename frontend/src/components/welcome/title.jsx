@@ -38,7 +38,10 @@ function Title() {
         </div>
         <button
           className="container3"
-          onClick={()=>(window.location.href=`${import.meta.env.VITE_API_URL}/api/auth/google`)}
+          onClick={() => {
+            const baseUrl = import.meta.env.VITE_API_URL?.replace(/\/$/, "") || "http://localhost:5001";
+            window.location.href = `${baseUrl}/api/auth/google`;
+          }}
         >
           Get started
         </button>

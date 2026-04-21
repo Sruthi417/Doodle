@@ -117,7 +117,20 @@ const Navbar = () => {
     }
   };
 
-  if (loading) return <div className="navbar">Loading...</div>;
+  if (loading) return (
+    <div className="navbar" style={{ justifyContent: 'center' }}>
+      <div className="loading-spinner">Loading Profile...</div>
+    </div>
+  );
+
+  if (error && !user) {
+    return (
+      <div className="navbar" style={{ justifyContent: 'space-between', padding: '0 20px' }}>
+        <span className="name">DOODLE</span>
+        <button className="logout" onClick={() => window.location.href = "/"}>Back to Login</button>
+      </div>
+    );
+  }
 
   return (
     <div className="navbar">

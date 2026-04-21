@@ -1,7 +1,16 @@
 import axios from "axios";
 
+const getBaseURL = () => {
+  const url = import.meta.env.VITE_API_URL;
+  if (!url) {
+    // If VITE_API_URL is missing, default to backend URL or localhost
+    return "http://localhost:5001/api"; 
+  }
+  return url.replace(/\/$/, "") + "/api";
+};
+
 const API = axios.create({
-  baseURL: import.meta.env.VITE_API_URL + "/api",
+  baseURL: getBaseURL(),
   withCredentials: true,
 });
 
