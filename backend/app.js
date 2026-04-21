@@ -21,7 +21,7 @@ const allowedOrigins = [
   "http://localhost:5173",
   "http://localhost:5174",
   "http://localhost:3000",
-  "https://doodle-frontend-5x5m.onrender.com",
+  "https://doodle-xi-two.vercel.app",
 ].filter(Boolean).map(url => url.replace(/\/$/, ""));
 
 app.use(
