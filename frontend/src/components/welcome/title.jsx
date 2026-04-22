@@ -13,11 +13,12 @@ function Title() {
         <div className="name">
           D<span className="color">OO</span>DLE
         </div>
+        <div className="images">
+          <img src={lines} className="line" />
+          <img src={pencil} className="pencil" />
+        </div>
       </div>
-      <div className="images">
-        <img src={lines} className="line" />
-        <img src={pencil} className="pencil" />
-      </div>
+
       <div className="container2">
         <div className="sen">
           Start your <br />
@@ -43,7 +44,7 @@ function Title() {
             window.location.href = `${baseUrl}/api/auth/google`;
           }}
         >
-          Get started
+          Login
         </button>
       </div>
     </div>

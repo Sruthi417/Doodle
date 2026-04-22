@@ -88,3 +88,15 @@
 body {
   font-family: "Poppins", sans-serif;
 }
+
+/* Global full-width override logic for Welcome page > 600px */
+@media (min-width: 601px) {
+  .layout:has(.main) {
+    justify-content: flex-start !important;
+  }
+  .layout:has(.main) .screen {
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0px !important;
+  }
+}
