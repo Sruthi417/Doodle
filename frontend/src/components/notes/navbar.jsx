@@ -1,7 +1,7 @@
 import "./notes.scss";
 import write from "../../assets/write.png";
 import SearchIcon from "../../assets/SearchIcon.png";
-import { getProfile, logout, updateProfile } from "../../api/profile";
+import { getProfile, logout } from "../../api/profile";
 import { useState, useEffect, useRef, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import useNoteStore from "../../store/useNoteStore";
@@ -13,7 +13,6 @@ const Navbar = () => {
   const [error, setError] = useState(null);
   const navigate = useNavigate();
   const dropdownref = useRef(); //when clicked outside close dropdown
-  const fileInputRef = useRef();
   const debounceRef = useRef(null);
 
   const { searchQuery, setSearchQuery, performSearch } = useNoteStore();
@@ -96,27 +95,6 @@ const Navbar = () => {
     window.location.href = "/";
   };
 
-  // Open file picker
-  const handleAvatarClick = () => {
-    fileInputRef.current.click();
-  };
-
-  //  Upload image
-  const handleFileChange = async (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
-
-    const formData = new FormData();
-    formData.append("image", file);
-
-    try {
-      const res = await updateProfile(formData);
-      setUser(res.data);
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
   if (loading) return (
     <div className="navbar" style={{ justifyContent: 'center' }}>
       <div className="loading-spinner">Loading Profile...</div>
@@ -143,7 +121,7 @@ const Navbar = () => {
 
           {user && (
             <div className="profile">
-              <div className="avatar" onClick={handleAvatarClick}>
+              <div className="avatar">
                 {user.profileImage?.url ? (
                   <img src={user.profileImage.url} alt="profile" />
                 ) : (
@@ -169,14 +147,6 @@ const Navbar = () => {
                   </button>
                 </div>
               )}
-
-              <input
-                type="file"
-                ref={fileInputRef}
-                onChange={handleFileChange}
-                style={{ display: "none" }}
-                accept="image/*"
-              />
             </div>
           )}
         </div>

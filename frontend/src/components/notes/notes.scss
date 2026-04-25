@@ -387,6 +387,12 @@
     }
   }
 
+  @media (min-width: 860px) {
+    .empty-notes .empty-icon {
+      height: auto;
+    }
+  }
+
   @keyframes fadeIn {
     from {
       opacity: 0;
